@@ -72,7 +72,7 @@ export function DitherTool() {
 
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
-      <aside className="w-full shrink-0 border-b border-border bg-card/40 lg:h-dvh lg:w-[320px] lg:overflow-y-auto lg:border-b-0 lg:border-r">
+      <aside className="order-2 w-full shrink-0 border-t border-border bg-card/40 lg:order-none lg:h-dvh lg:w-[320px] lg:overflow-y-auto lg:border-r lg:border-t-0">
         <ControlPanel
           settings={settings}
           update={update}
@@ -80,7 +80,7 @@ export function DitherTool() {
           source={source}
         />
       </aside>
-      <div className="flex-1">
+      <div className="order-1 flex-1 lg:order-none">
         <PreviewPanel
           settings={settings}
           source={source}
