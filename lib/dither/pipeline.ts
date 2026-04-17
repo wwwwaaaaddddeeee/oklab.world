@@ -10,6 +10,7 @@ import {
 } from "./error-diffusion";
 import { bayerDither } from "./bayer";
 import { applyTone } from "./tone";
+import { gaussianBlur } from "./blur";
 
 export type DitherResult = {
   width: number;
@@ -34,7 +35,9 @@ export function runPipeline(
     dstH,
   );
 
-  const toned = applyTone(scaled, {
+  const blurred = gaussianBlur(scaled, dstW, dstH, settings.blur);
+
+  const toned = applyTone(blurred, {
     contrast: settings.contrast,
     midtones: settings.midtones,
     highlights: settings.highlights,
