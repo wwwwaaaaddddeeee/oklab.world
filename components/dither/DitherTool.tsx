@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ControlPanel } from "./ControlPanel";
 import { PreviewPanel } from "./PreviewPanel";
 import { rasterizeSvg, type RasterSource } from "@/lib/dither/rasterize";
+import { runPipeline, type DitherResult } from "@/lib/dither/pipeline";
 
 export type Algorithm = "floyd-steinberg" | "atkinson" | "bayer-4" | "bayer-8";
 
@@ -61,6 +62,11 @@ export function DitherTool() {
     }
   }, []);
 
+  const result: DitherResult | null = useMemo(() => {
+    if (!source) return null;
+    return runPipeline(source, settings);
+  }, [source, settings]);
+
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
       <aside className="w-full shrink-0 border-b border-border bg-card/40 lg:h-dvh lg:w-[320px] lg:overflow-y-auto lg:border-b-0 lg:border-r">
@@ -75,6 +81,7 @@ export function DitherTool() {
         <PreviewPanel
           settings={settings}
           source={source}
+          result={result}
           loading={loading}
           error={error}
         />
