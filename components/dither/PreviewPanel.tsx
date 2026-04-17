@@ -70,15 +70,19 @@ export function PreviewPanel({
             </div>
           )}
         </div>
-        <div className="relative flex w-full max-w-[160px] items-center justify-center overflow-hidden rounded-md border border-border">
-          {result ? (
-            <canvas
-              ref={thumbCanvas}
-              className="block h-auto w-full [image-rendering:pixelated]"
-            />
-          ) : (
-            <span className="py-5 text-[10px] text-muted-foreground">thumbnail</span>
-          )}
+        <div className="flex flex-col items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span>thumbnail (1:1)</span>
+          <div className="inline-flex items-center justify-center rounded-md border border-border bg-background p-1.5">
+            {result ? (
+              <canvas
+                ref={thumbCanvas}
+                className="block [image-rendering:pixelated]"
+                style={{ width: result.width, height: result.height }}
+              />
+            ) : (
+              <span className="px-4 py-3">—</span>
+            )}
+          </div>
         </div>
       </div>
     </div>
