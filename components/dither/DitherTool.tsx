@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ControlPanel } from "./ControlPanel";
 import { PreviewPanel } from "./PreviewPanel";
+import { rasterizeSvg, type RasterSource } from "@/lib/dither/rasterize";
 
 export type Algorithm = "floyd-steinberg" | "atkinson" | "bayer-4" | "bayer-8";
 
@@ -38,19 +39,45 @@ export const DEFAULT_SETTINGS: DitherSettings = {
 
 export function DitherTool() {
   const [settings, setSettings] = useState<DitherSettings>(DEFAULT_SETTINGS);
+  const [source, setSource] = useState<RasterSource | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const update = <K extends keyof DitherSettings>(
     key: K,
     value: DitherSettings[K],
   ) => setSettings((s) => ({ ...s, [key]: value }));
 
+  const handleFile = useCallback(async (file: File) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const raster = await rasterizeSvg(file);
+      setSource(raster);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "rasterization failed");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
       <aside className="w-full shrink-0 border-b border-border bg-card/40 lg:h-dvh lg:w-[320px] lg:overflow-y-auto lg:border-b-0 lg:border-r">
-        <ControlPanel settings={settings} update={update} />
+        <ControlPanel
+          settings={settings}
+          update={update}
+          onFile={handleFile}
+          source={source}
+        />
       </aside>
       <div className="flex-1">
-        <PreviewPanel settings={settings} />
+        <PreviewPanel
+          settings={settings}
+          source={source}
+          loading={loading}
+          error={error}
+        />
       </div>
     </div>
   );

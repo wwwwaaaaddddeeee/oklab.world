@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import type { Algorithm, DitherSettings } from "./DitherTool";
+import type { RasterSource } from "@/lib/dither/rasterize";
+import { DropZone } from "./DropZone";
 
 const ALGORITHMS: { value: Algorithm; label: string }[] = [
   { value: "floyd-steinberg", label: "Floyd-Steinberg" },
@@ -15,9 +17,11 @@ const ALGORITHMS: { value: Algorithm; label: string }[] = [
 type Props = {
   settings: DitherSettings;
   update: <K extends keyof DitherSettings>(key: K, value: DitherSettings[K]) => void;
+  onFile: (file: File) => void;
+  source: RasterSource | null;
 };
 
-export function ControlPanel({ settings, update }: Props) {
+export function ControlPanel({ settings, update, onFile, source }: Props) {
   return (
     <div className="flex flex-col gap-5 p-5">
       <header className="flex items-baseline justify-between">
@@ -26,7 +30,7 @@ export function ControlPanel({ settings, update }: Props) {
       </header>
 
       <Section title="Source">
-        <DropZone />
+        <DropZone onFile={onFile} currentName={source?.sourceName} />
       </Section>
 
       <Separator />
@@ -259,21 +263,3 @@ function Toggle({
   );
 }
 
-function DropZone() {
-  return (
-    <label
-      htmlFor="dither-upload"
-      className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border/80 px-4 py-6 text-center text-xs text-muted-foreground hover:text-foreground"
-    >
-      <span className="font-medium text-foreground/80">Drop SVG here</span>
-      <span>or click to upload</span>
-      <input
-        id="dither-upload"
-        type="file"
-        accept=".svg,image/svg+xml"
-        className="sr-only"
-        disabled
-      />
-    </label>
-  );
-}
