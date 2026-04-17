@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { ControlPanel } from "./ControlPanel";
 import { PreviewPanel } from "./PreviewPanel";
 import { rasterizeSvg, type RasterSource } from "@/lib/dither/rasterize";
@@ -62,10 +62,13 @@ export function DitherTool() {
     }
   }, []);
 
+  const deferredSettings = useDeferredValue(settings);
+  const stale = deferredSettings !== settings;
+
   const result: DitherResult | null = useMemo(() => {
     if (!source) return null;
-    return runPipeline(source, settings);
-  }, [source, settings]);
+    return runPipeline(source, deferredSettings);
+  }, [source, deferredSettings]);
 
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
@@ -84,6 +87,7 @@ export function DitherTool() {
           result={result}
           loading={loading}
           error={error}
+          stale={stale}
         />
       </div>
     </div>

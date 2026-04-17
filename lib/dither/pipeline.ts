@@ -25,8 +25,10 @@ export function runPipeline(
   settings: DitherSettings,
 ): DitherResult {
   const scaleFrac = Math.max(0.01, Math.min(1, settings.scale / 100));
-  const dstW = Math.max(1, Math.round(source.width * scaleFrac));
-  const dstH = Math.max(1, Math.round(source.height * scaleFrac));
+  const renderFrac = Math.max(0.1, Math.min(1, settings.renderScale));
+  const effective = scaleFrac * renderFrac;
+  const dstW = Math.max(1, Math.round(source.width * effective));
+  const dstH = Math.max(1, Math.round(source.height * effective));
 
   const scaled = nearestResample(
     source.luminance,

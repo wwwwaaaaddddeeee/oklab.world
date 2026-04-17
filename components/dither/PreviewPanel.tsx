@@ -11,18 +11,29 @@ type Props = {
   result: DitherResult | null;
   loading: boolean;
   error: string | null;
+  stale: boolean;
 };
 
 const DOT_COLOR = "#ededed";
 
-export function PreviewPanel({ settings, source, result, loading, error }: Props) {
+export function PreviewPanel({
+  settings,
+  source,
+  result,
+  loading,
+  error,
+  stale,
+}: Props) {
   const mainCanvas = useRef<HTMLCanvasElement | null>(null);
   const thumbCanvas = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (!result) return;
-    paintBitmap(mainCanvas.current, result);
-    paintBitmap(thumbCanvas.current, result);
+    const raf = requestAnimationFrame(() => {
+      paintBitmap(mainCanvas.current, result);
+      paintBitmap(thumbCanvas.current, result);
+    });
+    return () => cancelAnimationFrame(raf);
   }, [result]);
 
   const meta = result
@@ -34,7 +45,14 @@ export function PreviewPanel({ settings, source, result, loading, error }: Props
   return (
     <div className="flex min-h-dvh flex-col gap-6 p-6 lg:p-10">
       <header className="flex items-baseline justify-between">
-        <h2 className="text-sm font-medium">Preview</h2>
+        <h2 className="text-sm font-medium">
+          Preview
+          {stale ? (
+            <span className="ml-2 text-[10px] font-normal uppercase tracking-[0.12em] text-muted-foreground">
+              computing…
+            </span>
+          ) : null}
+        </h2>
         <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
           {meta}
         </span>
