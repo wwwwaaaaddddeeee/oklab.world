@@ -8,6 +8,7 @@ import {
   type ErrorDiffusionOptions,
   type KernelEntry,
 } from "./error-diffusion";
+import { bayerDither } from "./bayer";
 
 export type DitherResult = {
   width: number;
@@ -45,10 +46,16 @@ export function runPipeline(
       bitmap = errorDiffuse(scaled, dstW, dstH, ATKINSON_KERNEL, edOpts);
       break;
     case "bayer-4":
+      bitmap = bayerDither(scaled, dstW, dstH, 4, {
+        threshold: settings.threshold,
+        invert: settings.invert,
+      });
+      break;
     case "bayer-8":
-      // DT-5 will replace this with ordered dithering; until then fall back
-      // to F-S so the dropdown never produces an empty preview.
-      bitmap = errorDiffuse(scaled, dstW, dstH, FLOYD_STEINBERG_KERNEL, edOpts);
+      bitmap = bayerDither(scaled, dstW, dstH, 8, {
+        threshold: settings.threshold,
+        invert: settings.invert,
+      });
       break;
     case "floyd-steinberg":
     default: {
