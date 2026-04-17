@@ -11,6 +11,7 @@ import {
 import { bayerDither } from "./bayer";
 import { applyTone } from "./tone";
 import { gaussianBlur } from "./blur";
+import { applyCornerMask } from "./shape";
 
 export type DitherResult = {
   width: number;
@@ -75,8 +76,10 @@ export function runPipeline(
     }
   }
 
-  let dotCount = 0;
-  for (let i = 0; i < bitmap.length; i++) if (bitmap[i]) dotCount++;
+  const masked = applyCornerMask(bitmap, dstW, dstH, settings.cornerRadius);
 
-  return { width: dstW, height: dstH, bitmap, dotCount };
+  let dotCount = 0;
+  for (let i = 0; i < masked.length; i++) if (masked[i]) dotCount++;
+
+  return { width: dstW, height: dstH, bitmap: masked, dotCount };
 }
