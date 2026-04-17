@@ -51,6 +51,12 @@
 :root {
   --background: #f0f0f0;
   --foreground: oklch(0.145 0 0);
+  --glass-bg-top: rgba(255, 255, 255, 0.55);
+  --glass-bg-bottom: rgba(255, 255, 255, 0.25);
+  --glass-highlight: rgba(255, 255, 255, 0.72);
+  --glass-rim: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.22),
+    0 3px 8px -2px rgba(0, 0, 0, 0.1);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -87,6 +93,12 @@
   :root {
     --background: #0f0f0f;
     --foreground: oklch(0.985 0 0);
+    --glass-bg-top: rgba(255, 255, 255, 0.1);
+    --glass-bg-bottom: rgba(255, 255, 255, 0.02);
+    --glass-highlight: rgba(255, 255, 255, 0.24);
+    --glass-rim: rgba(0, 0, 0, 0.4);
+    --glass-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.55),
+      0 4px 10px -2px rgba(0, 0, 0, 0.35);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
@@ -117,6 +129,12 @@
 .dark {
   --background: #0f0f0f;
   --foreground: oklch(0.985 0 0);
+  --glass-bg-top: rgba(255, 255, 255, 0.1);
+  --glass-bg-bottom: rgba(255, 255, 255, 0.02);
+  --glass-highlight: rgba(255, 255, 255, 0.24);
+  --glass-rim: rgba(0, 0, 0, 0.4);
+  --glass-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.55),
+    0 4px 10px -2px rgba(0, 0, 0, 0.35);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
