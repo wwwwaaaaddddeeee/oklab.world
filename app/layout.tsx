@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://oklab.world"),
   title: "oklab.world",
   description: "oklab.world",
+  openGraph: {
+    title: "oklab.world",
+    description: "oklab.world",
+    url: "https://oklab.world",
+    siteName: "oklab.world",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
@@ -34,7 +43,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
