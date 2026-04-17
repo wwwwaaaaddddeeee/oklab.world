@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Algorithm, DitherSettings } from "./DitherTool";
 import type { RasterSource } from "@/lib/dither/rasterize";
 import { DropZone } from "./DropZone";
+import { ActionBar } from "./ActionBar";
 
 const ALGORITHMS: { value: Algorithm; label: string }[] = [
   { value: "floyd-steinberg", label: "Floyd-Steinberg" },
@@ -162,7 +163,7 @@ export function ControlPanel({ settings, update, onFile, source }: Props) {
 
       <Section title="Render">
         <SliderRow
-          label="Scale"
+          label="Preview quality"
           suffix="×"
           value={settings.renderScale}
           min={0.1}
@@ -171,6 +172,12 @@ export function ControlPanel({ settings, update, onFile, source }: Props) {
           fmt={(v) => v.toFixed(2)}
           onChange={(v) => update("renderScale", v)}
         />
+      </Section>
+
+      <Separator />
+
+      <Section title="Export">
+        <ActionBar source={source} settings={settings} />
       </Section>
     </div>
   );
