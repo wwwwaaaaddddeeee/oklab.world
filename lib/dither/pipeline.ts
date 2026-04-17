@@ -9,6 +9,7 @@ import {
   type KernelEntry,
 } from "./error-diffusion";
 import { bayerDither } from "./bayer";
+import { applyTone } from "./tone";
 
 export type DitherResult = {
   width: number;
@@ -33,6 +34,12 @@ export function runPipeline(
     dstH,
   );
 
+  const toned = applyTone(scaled, {
+    contrast: settings.contrast,
+    midtones: settings.midtones,
+    highlights: settings.highlights,
+  });
+
   const edOpts: ErrorDiffusionOptions = {
     serpentine: settings.serpentine,
     errorStrength: settings.errorStrength / 100,
@@ -43,16 +50,16 @@ export function runPipeline(
   let bitmap: Uint8Array;
   switch (settings.algorithm) {
     case "atkinson":
-      bitmap = errorDiffuse(scaled, dstW, dstH, ATKINSON_KERNEL, edOpts);
+      bitmap = errorDiffuse(toned, dstW, dstH, ATKINSON_KERNEL, edOpts);
       break;
     case "bayer-4":
-      bitmap = bayerDither(scaled, dstW, dstH, 4, {
+      bitmap = bayerDither(toned, dstW, dstH, 4, {
         threshold: settings.threshold,
         invert: settings.invert,
       });
       break;
     case "bayer-8":
-      bitmap = bayerDither(scaled, dstW, dstH, 8, {
+      bitmap = bayerDither(toned, dstW, dstH, 8, {
         threshold: settings.threshold,
         invert: settings.invert,
       });
@@ -60,7 +67,7 @@ export function runPipeline(
     case "floyd-steinberg":
     default: {
       const kernel: KernelEntry[] = FLOYD_STEINBERG_KERNEL;
-      bitmap = errorDiffuse(scaled, dstW, dstH, kernel, edOpts);
+      bitmap = errorDiffuse(toned, dstW, dstH, kernel, edOpts);
       break;
     }
   }
