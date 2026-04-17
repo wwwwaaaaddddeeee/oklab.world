@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex min-h-dvh items-center justify-center bg-background px-6">
       <div className="flex items-center gap-7">
         <LiquidGlass
-          className="h-[150px] w-[150px] shrink-0 rounded-full"
+          className="h-[75px] w-[75px] shrink-0 rounded-full"
           aria-label="oklab.world"
         >
           <GooeyGradient />
