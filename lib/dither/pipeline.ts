@@ -3,8 +3,10 @@ import type { RasterSource } from "./rasterize";
 import { nearestResample } from "./resample";
 import {
   errorDiffuse,
+  ATKINSON_KERNEL,
   FLOYD_STEINBERG_KERNEL,
   type ErrorDiffusionOptions,
+  type KernelEntry,
 } from "./error-diffusion";
 
 export type DitherResult = {
@@ -37,15 +39,24 @@ export function runPipeline(
     invert: settings.invert,
   };
 
-  // DT-4 (Atkinson) and DT-5 (Bayer) will replace this switch; for now
-  // every algorithm routes through Floyd-Steinberg so the UI stays wired.
-  const bitmap = errorDiffuse(
-    scaled,
-    dstW,
-    dstH,
-    FLOYD_STEINBERG_KERNEL,
-    edOpts,
-  );
+  let bitmap: Uint8Array;
+  switch (settings.algorithm) {
+    case "atkinson":
+      bitmap = errorDiffuse(scaled, dstW, dstH, ATKINSON_KERNEL, edOpts);
+      break;
+    case "bayer-4":
+    case "bayer-8":
+      // DT-5 will replace this with ordered dithering; until then fall back
+      // to F-S so the dropdown never produces an empty preview.
+      bitmap = errorDiffuse(scaled, dstW, dstH, FLOYD_STEINBERG_KERNEL, edOpts);
+      break;
+    case "floyd-steinberg":
+    default: {
+      const kernel: KernelEntry[] = FLOYD_STEINBERG_KERNEL;
+      bitmap = errorDiffuse(scaled, dstW, dstH, kernel, edOpts);
+      break;
+    }
+  }
 
   let dotCount = 0;
   for (let i = 0; i < bitmap.length; i++) if (bitmap[i]) dotCount++;
