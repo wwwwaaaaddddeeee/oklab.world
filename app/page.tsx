@@ -21,10 +21,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-black flex items-center p-8">
-      <div className="grid grid-cols-2 gap-y-12 md:gap-y-24 leading-snug text-[10px] md:text-[13px] w-full">
-        <span aria-hidden />
-        <div className="flex flex-col gap-1 max-w-xs md:max-w-[16rem]">
+    <div className="min-h-screen bg-white text-black flex items-center justify-center p-8">
+      <div className="flex flex-col gap-12 md:gap-24 leading-snug text-[10px] md:text-[13px] max-w-[14rem] md:max-w-[16rem]">
+        <div className="flex flex-col gap-1">
+          <span className="font-bold text-black mb-6 text-[16px] md:text-[20px]">
+            OKLB
+          </span>
           <span className="text-neutral-500">www.oklab.world</span>
           <span
             className="text-neutral-500 tabular-nums"
@@ -32,17 +34,20 @@ export default function Home() {
           >
             {time} CST
           </span>
-          <div className="flex items-center gap-3">
-            <span
-              aria-hidden
-              className="inline-block size-2.5 md:size-3 rounded-full bg-neutral-300 shrink-0"
-            />
-            <span className="text-black">&amp; 1,104 more</span>
-          </div>
         </div>
 
-        <span className="font-bold text-black text-right pr-5">OKLB</span>
-        <div className="text-neutral-500 space-y-3 max-w-xs md:max-w-[16rem]">
+        <div className="flex items-center gap-1">
+          {["gl-01", "gl-02", "gl-03", "gl-04", "gl-05"].map((name) => (
+            <img
+              key={name}
+              src={`/${name}.png`}
+              alt=""
+              className="size-4 shrink-0"
+            />
+          ))}
+        </div>
+
+        <div className="text-neutral-500 space-y-3">
           <p>
             Gradients rendered in a color space designed for how your eyes
             actually see.
