@@ -21,10 +21,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-black flex items-center justify-center p-8">
-      <div className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-16 md:gap-y-24 leading-snug text-[10px] md:text-[13px]">
+    <div className="min-h-screen bg-white text-black flex items-center p-8 relative">
+      <div className="pointer-events-none fixed inset-y-0 left-1/2 w-px bg-red-500 z-50" />
+      <div className="grid grid-cols-2 gap-y-16 md:gap-y-24 leading-snug text-[10px] md:text-[13px] w-full">
         <span aria-hidden />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 max-w-xs md:max-w-sm">
           <span className="text-neutral-500">www.oklab.world</span>
           <span
             className="text-neutral-500 tabular-nums"
@@ -41,9 +42,12 @@ export default function Home() {
           </div>
         </div>
 
-        <span className="font-bold text-black">OKLB</span>
-        <div className="text-neutral-500 space-y-1">
-          <p>Look 34 — A/W21</p>
+        <span className="font-bold text-black text-right pr-5">OKLB</span>
+        <div className="text-neutral-500 space-y-1 max-w-xs md:max-w-sm">
+          <p>
+            Gradients rendered in a color space designed for how your eyes
+            actually see.
+          </p>
           <p>Available online now</p>
           <p>
             @{" "}
