@@ -1,35 +1,61 @@
-import { Heart } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Chicago",
+  hour: "numeric",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true,
+});
 
 export default function Home() {
+  const [time, setTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const tick = () => setTime(formatter.format(new Date()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-8">
-      <div className="w-full max-w-xs md:max-w-sm space-y-2 leading-snug text-[10px] md:text-[13px]">
-        <div className="flex items-center justify-between gap-6">
-          <div className="flex items-center gap-3 flex-wrap">
-            <Heart
-              className="size-2.5 md:size-3 shrink-0"
-              fill="#4ade80"
-              stroke="#4ade80"
-            />
-            <span className="text-neutral-400">Liked by</span>
+    <div className="min-h-screen bg-white text-black flex items-center justify-center p-8">
+      <div className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-16 md:gap-y-24 leading-snug text-[10px] md:text-[13px]">
+        <span aria-hidden />
+        <div className="flex flex-col gap-1">
+          <span className="text-neutral-500">www.oklab.world</span>
+          <span
+            className="text-neutral-500 tabular-nums"
+            suppressHydrationWarning
+          >
+            {time ?? ""} CST
+          </span>
+          <div className="flex items-center gap-3">
             <span
               aria-hidden
-              className="inline-block size-2.5 md:size-3 rounded-full bg-neutral-600 shrink-0"
+              className="inline-block size-2.5 md:size-3 rounded-full bg-neutral-300 shrink-0"
             />
-            <span className="text-white">&amp; 1,104 more</span>
+            <span className="text-black">&amp; 1,104 more</span>
           </div>
-          <span className="text-neutral-400 shrink-0">43m ago</span>
         </div>
 
-        <div className="flex gap-5">
-          <span className="font-bold text-white">ERL</span>
-          <div className="text-neutral-400 space-y-1">
-            <p>Look 34 — A/W21</p>
-            <p>Available online now</p>
-            <p>
-              @ <a className="underline">erl.store</a>
-            </p>
-          </div>
+        <span className="font-bold text-black">OKLB</span>
+        <div className="text-neutral-500 space-y-1">
+          <p>Look 34 — A/W21</p>
+          <p>Available online now</p>
+          <p>
+            @{" "}
+            <a
+              href="https://wa-de.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              wa-de
+            </a>
+          </p>
         </div>
       </div>
     </div>
